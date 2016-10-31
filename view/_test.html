@@ -1,0 +1,490 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="UTF-8" />
+		<title>HTML5版驴子跳(Donkey Jump) - HTML5游戏 - 御剑神兵的博客 - 专注前端技术研究</title>
+		<meta name="description" content="这是一个基于HTML5 Canvas和Audio开发的游戏,提供源码下载和详细的注释" />
+		<meta name="keywords"  content="Web前端, 前端开发, JavaScript, HTML, Canvas, Audio, HTML5画布, HTML5游戏, HTML5版驴子跳(Donkey Jump)" />
+		<link type="text/css" rel="stylesheet" href="css/main.css" />
+	</head>
+	<body>
+		<div id="donkeyJump">
+			<!-- 预备界面 -->
+			<div id="gameCover" class="block background">
+				<!-- 声音控制按钮 -->
+				<a href="javascript:void(0)" id="btnSound" class="icon">&nbsp;</a>
+				<!-- 成就 -->
+				<a href="javascript:void(0)" id="btnCup" class="icon">&nbsp;</a>
+				<!-- 排行榜 -->
+				<a href="javascript:void(0)" id="btnScore" class="icon">&nbsp;</a>
+				<!-- 开始 -->
+				<a href="javascript:void(0)" id="btnPlay" class="icon">&nbsp;</a>
+				<!-- 更多 -->
+				<a href="javascript:void(0)" id="btnMore" class="icon">&nbsp;</a>
+				<!-- 分享 -->
+				<a href="javascript:void(0)" id="btnShare" class="icon">&nbsp;</a>
+				<!-- 加载资源 -->
+				<span id="progressText"></span>
+			</div>
+			<!-- 游戏主体 -->
+			<div id="gameBody" class="block">
+				<div id="gameCanvas" class="block">
+					<!-- 天空背景层 -->
+					<canvas width="480" height="800" id="canvasSkyLayer"></canvas>
+					<!-- 远景山丘背景层 -->
+					<canvas width="480" height="800" id="canvasHillLayer"></canvas>
+					<!-- 近景山丘背景层 -->
+					<canvas width="480" height="800" id="canvasHillNearLayer"></canvas>
+					<!-- 房子背景层 -->
+					<canvas width="480" height="800" id="canvasFloorLayer"></canvas>
+					<!-- 白云精灵层 -->
+					<canvas width="480" height="800" id="canvasStairLayer"></canvas>
+					<!-- 驴子精灵层 -->
+					<canvas width="480" height="800" id="canvasDonkeyLayer"></canvas>
+					<!-- 效果精灵层 -->
+					<canvas width="480" height="800" id="canvasEffectLayer"></canvas>
+				</div>
+				<!-- 分数及暂停按钮 -->
+				<div id="numberAndPause" class="block">
+					<!-- 分数 -->
+					<div id="number" class="icon"></div>
+					<!-- 暂停 -->
+					<a href="javascript:void(0)" id="btnPause" class="icon">&nbsp;</a>
+				</div>
+				<!-- 预备 -->
+				<div id="beingReady" class="icon">
+					&nbsp;
+				</div>
+				<!-- 开始 -->
+				<div id="beingGo" class="icon">
+					&nbsp;
+				</div>
+				<!-- 暂停面板 -->
+				<div id="panelResume" class="icon">
+					<!-- 返回列表 -->
+					<a href="javascript:void(0)" id="btnResumeExit">&nbsp;</a>
+					<!-- 继续游戏 -->
+					<a href="javascript:void(0)" id="btnResume">&nbsp;</a>
+				</div>
+			</div>
+			<!-- 游戏结束 -->
+			<div id="gameOver" class="block background">
+				<!-- 分享 -->
+				<a href="javascript:void(0)" id="btnShare2" class="icon">&nbsp;</a>
+				<!-- 名字 -->
+				<span id="name"></span>
+				<!-- 得分 -->
+				<span id="score"></span>
+				<!-- 排行榜 -->
+				<a href="javascript:void(0)" id="btnScore2" class="icon">&nbsp;</a>
+				<!-- 准备 -->
+				<a href="javascript:void(0)" id="btnRetry" class="icon">&nbsp;</a>
+				<!-- 更多 -->
+				<a href="javascript:void(0)" id="btnMore2" class="icon">&nbsp;</a>
+				<!-- 成就 -->
+				<a href="javascript:void(0)" id="btnCup2" class="icon">&nbsp;</a>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/lib/engine.js"></script>
+		<script type="text/javascript" src="js/lib/movieclip.js"></script>
+		<style type="text/css">
+			#gameBody{
+				display:block;
+			}
+		</style>
+		<script type="text/javascript">
+			var stage = new createjs.Stage('canvasSkyLayer');
+			
+			//// demo1
+			// createjs.Ticker.setFPS(50);
+
+			// createjs.Ticker.addEventListener('tick', stage);
+
+			// var mc = new createjs.MovieClip(null, 0, true, {start: 0, stop: 400});
+
+			// stage.addChild(mc);
+
+			// var state1 = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 100, 40,50));
+			// var state2 = new createjs.Shape(new createjs.Graphics().beginFill("green").drawCircle(0, 100, 40));
+
+			// mc.timeline.addTween(
+			// 	createjs.Tween.get(state1).to({x: 0}).to({x: 480}, 100).to({x:0 }, 100),
+			// 	createjs.Tween.get(state2).to({x: 480}).to({x: 0}, 100).to({x:480 }, 100)
+			// );
+
+			// mc.gotoAndPlay('stop')
+
+			//// demo2
+			// createjs.Ticker.setFPS(50);
+
+			// createjs.Ticker.addEventListener('tick', handlertick);
+
+			// var rect ;
+			// var text = new createjs.Text("Hello World", "40px Arial", "yellow");
+			// text.x = 100;
+			// text.y = 100;
+			// text.rotation = 20;
+			// text.textBaseline = "alphabetic";
+
+			// stage.addChild(text);
+
+			// rect = new createjs.Shape();
+			// rect.x = text.x;
+			// rect.y = text.y;
+			// rect.rotation = text.rotation;
+			// stage.addChildAt(rect, 0);
+			// counter = 0;
+			// function handlertick(e) {
+				
+			// 	text.text = "hello world " + counter ++ ;
+			// 	rect.graphics.clear().beginFill('#f00').drawRect(-0, -40, text.getMeasuredWidth() + 20, 50);
+
+			// 	// body...
+			// 	stage.update(e)
+			// }
+
+
+
+
+			//// demo3
+			// var container  = new createjs.Container();
+			// stage.addChild(container);
+
+			// var bitmap = new createjs.Bitmap("images/frames/donkey/daiji.png");
+			// container.addChild(bitmap);
+			// bitmap.x =100;
+			// bitmap.y = 300;
+			// bitmap.rotation = 20;
+
+			// createjs.Ticker.setFPS(4);
+			// createjs.Ticker.addEventListener('tick', function(e){
+			// 	var date = +new Date().getTime()
+			// 	bitmap.rotation = (date % 3) * 10;
+			// 	bitmap.y = date % 300;
+			// 	container.setTransform( - 55.5, -45);
+			// 	stage.update(e);
+			// })
+
+			////demo 4
+
+			var spritesheet = new createjs.SpriteSheet({
+				images: ["images/frames/donkey/MJ.png"],
+				frames: {
+					height: 128,
+					width: 128,
+					count: 14
+				},
+				animations: {
+					run: [0, 13, "run"]
+				}
+			});
+			var offsetY = 400
+			var sprite = new createjs.Sprite(spritesheet, "run");
+			sprite.x = 200;
+			sprite.y = offsetY;
+			
+			stage.addChild(sprite);
+			createjs.Ticker.setFPS(30);
+
+			createjs.Ticker.addEventListener('tick', function(e){
+				offsetY -= 10;
+				if(offsetY < 0) {
+					offsetY = 400;
+				}
+				sprite.y = offsetY;
+				stage.update(e);
+			});
+
+
+			//// demo5
+
+
+			// var container = new createjs.Container();
+			// stage.addChild(container);
+			// var Rect = new createjs.Shape();
+			// Rect.graphics.beginFill('#ff0000');
+			// Rect.graphics.drawRect(0, 0, 100, 100);
+			// container.addChild(Rect);
+
+			
+			
+
+			// Rect.addEventListener('dblclick', function(e){
+			// 	alert('aaaa')
+			// })
+
+
+			// stage.update();
+
+
+			//// demo6
+			//绘制圆形  
+			// var circle=new createjs.Shape();  
+			// circle.graphics.f("#f00").dc(0,0,100).ef();  
+			// circle.x=100;  
+			// circle.y=240;  
+			// stage.addChild(circle);  
+			  
+			// //绘制眼睛  
+			// var eye=new createjs.Shape();  
+			// eye.graphics.f("rgba(0,0,20,.5)").de(0,0,20,40).ef;  
+			// eye.x=50;  
+			// eye.y=180;  
+			// stage.addChild(eye);  
+			  
+			// var eye2=new createjs.Shape();  
+			// eye2.graphics=eye.graphics.clone();  
+			// eye2.x=130;  
+			// eye2.y=180;  
+			// stage.addChild(eye2);  
+			  
+			// //绘制鼻子  
+			// var nose=new createjs.Shape();  
+			// nose.graphics.f("rgba(0,0,20,.5)").dc(0,0,10).ef;  
+			// nose.x=100;  
+			// nose.y=250;  
+			// stage.addChild(nose);  
+			  
+			// //绘制嘴巴  
+			// var mouth=new createjs.Shape();  
+			// mouth.graphics.ss(4).s("rgba(0,0,0,.5)").a(0,0,100,Math.PI*60/180,Math.PI*120/180);  
+			// mouth.x=100;  
+			// mouth.y=200;  
+			// stage.addChild(mouth);  
+			  
+			// stage.update();  
+
+
+////demo8
+			// var donkeyImg = new Image();
+
+			// donkeyImg.onload = loadDonkey;
+			// donkeyImg.src ='images/frames/donkey/MJ.png';
+
+			// function loadDonkey(){
+			// 	var shape = new createjs.Bitmap(donkeyImg);
+			// 	shape.setTransform(100, 100);
+			// 	var mask = new createjs.Shape();
+   //          	mask.graphics = new createjs.Graphics().beginFill('green').beginStroke('red').beginBitmapFill(shape).drawCircle(340,140,100).endStroke();
+	  //           // 给图片设置蒙版
+	  //           shape.mask = mask;
+	  //           // 如果要看到mask的边界，则需要自己手动添加到stage中
+	  //           stage.addChild(shape,mask);
+	  //           stage.update();
+			// }
+
+//// demo 8 
+// var canvas,
+//     text,
+//     rect,
+//     count = 0;
+
+
+// text = new createjs.Text('text on the canvas...0!', '36px Arial', '#fff');
+// text.x = 200;
+// text.y = 300;
+// text.rotation = 5;
+// stage.addChild(text);
+
+// rect = new createjs.Shape();
+// rect.x = text.x;
+// rect.y = text.y;
+
+
+// stage.addChildAt(rect, 0);
+
+// createjs.Ticker.setFPS(60);
+// createjs.Ticker.addEventListener('tick', handleTick);
+
+
+// function handleTick (e) {
+//     count++;
+//     text.text = 'text on the canvas...' + count + '!';
+//     text.rotation +=5000;
+//     rect.rotation = text.rotation;
+//     rect.graphics.clear().beginFill('#f00').drawRect(-30,-10,text.getMeasuredWidth()+20, text.getMeasuredLineHeight()+20);
+//     stage.update(e);
+
+
+// }
+
+
+
+
+
+
+
+
+
+//// demo9
+
+        // var soundID = "mario";
+        // var queue;
+        // var count = 0;
+        // function init(){
+            //EaselJS----------------------------
+            // var bg = new createjs.Shape();
+            // bg.graphics.beginFill("#FFF").drawRoundRect(0, 0, 100, 30, 15);
+            // var text = new createjs.Text("heyo!", "bold 20px Arial");
+            // text.set({textAlign:"center", x:50, textBaseline:"middle", y:15});
+            // text.color = "blue";
+            // var button = stage.addChild(new createjs.Container());
+            // button.x = button.y = 100;
+            // button.addChild(bg, text);
+            // button.on("click", function(){
+            //     alert("Hello!!!");
+            // });
+
+            // stage.update();
+            //TweenJS----------------------------
+            
+            // var circle = new createjs.Shape();
+            // circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
+            // circle.x = 100;
+            // circle.y = 100;
+            // stage.addChild(circle);
+            // createjs.Tween.get(circle, {loop: true})
+            //         .to({x: 400}, 1000, createjs.Ease.getPowInOut(4))
+            //         .to({alpha: 0, y: 75}, 500, createjs.Ease.getPowInOut(2))
+            //         .to({alpha: 0, y: 125}, 100)
+            //         .to({alpha: 1, y: 100}, 500, createjs.Ease.getPowInOut(2))
+            //         .to({x: 100}, 800, createjs.Ease.getPowInOut(2));
+            // createjs.Ticker.setFPS(60);
+            // createjs.Ticker.addEventListener("tick", stage);
+            
+            // var text1 = new createjs.Text("How", "bold 20px Arial");
+            // text1.set({textAlign:"center", x:50, textBaseline:"middle", y:100});
+            // text1.color = "blue";
+            // var text2 = new createjs.Text("are", "bold 20px Arial");
+            // text2.set({textAlign:"center", x:150, textBaseline:"middle", y:100});
+            // text2.color = "red";
+            // var text3 = new createjs.Text("you!", "bold 20px Arial");
+            // text3.set({textAlign:"center", x:250, textBaseline:"middle", y:100});
+            // text3.color = "green";
+            // stage.addChild(text1);
+            // stage.addChild(text2);
+            // stage.addChild(text3);
+            // createjs.Tween.get(text1, {loop: true}, null, false)
+            //         //.to({alpha:1}, 1500)
+            //         .to({rotation:360, color:"white"}, 1300)
+            //         .to({y:380, color:"green", alpha:0.2}, 2000, createjs.Ease.cubicIn)
+            //         .to({y:180, color:"yellow", alpha:0.2}, 2000, createjs.Ease.cubicIn)
+            //         .to({y:100, color:"red",alpha: 1}, 1000, createjs.Ease.get(1000))
+            //         ////.to({color:"red"}, 500)
+            //         .wait(1000);
+            // createjs.Tween.get(text2, {loop: true}, null, false)
+            //         .to({alpha:1}, 1500)
+            //         .to({rotation:360, color:"white"}, 1300)
+            //         .to({y:380, color:"blue", alpha:0.2}, 2000, createjs.Ease.getPowInOut(10))
+            //         .to({y:100, alpha: 1}, 1000)
+            //         .to({color:"green"}, 500)
+            //         .wait(1000);
+            // createjs.Tween.get(text3, {loop: true}, null, false)
+            //         .to({alpha:1}, 1500)
+            //         .to({rotation:360, color:"white"}, 1300)
+            //         .to({y:380, color:"red", alpha:0.2}, 2000, createjs.Ease.getBackIn(2))
+            //         .to({y:100, alpha: 1}, 1000, createjs.Ease.get(-1))
+            //         .to({color:"blue"}, 500)
+            //         .wait(1000);
+            // createjs.Ticker.setFPS(20);
+            // createjs.Ticker.addEventListener("tick", stage);
+            //preloadJS----------------------------
+//             var manifest = [
+//                 {src:"/image/frames/donkey/daiji.jpg", id:"test1"},
+//                 {src:"/image/frames/donkey/dead.jpg", id:"test2"},
+//                 {src:"/image/frames/donkey/jump.jpg", id:"test3"},
+//                 {src:"/image/frames/donkey/plan.jpg", id:"test4"}
+//             ];
+//             queue = new createjs.LoadQueue(true);
+//             queue.loadManifest(manifest);
+//             queue.addEventListener("complete", changeImage);
+//             //SoundJS----------------------------
+//             createjs.Sound.registerSound("/audio/ogg_balloon.mp3", soundID);
+//         }
+
+//         document.body.addEventListener('click', function(){
+//         	playSound()
+//         })
+//         //SoundJS----------------------------
+//         function playSound () {
+//             createjs.Sound.play(soundID);
+//         }
+//         function stopSound () {
+//             createjs.Sound.stop(soundID);
+//         }
+//         function changeImage(){
+//             count++;
+//             if(count == 5){
+//                 count = 1;
+//             }
+//             queue.addEventListener("complete", handleComplete(count));
+//         }
+//         function handleComplete(Num){
+//             var img = new createjs.Bitmap(queue.getResult("test" + Num));
+//             stage.removeChildAt(1);
+//             stage.addChild(img);
+//             stage.update();
+//             alert(1)
+//         }
+// init();
+// var canvas;
+// var stage;
+// var shape;
+// var circles = 8;
+
+// function init() {
+//   canvas = document.getElementById("canvasSkyLayer");
+//   stage = new createjs.Stage(canvas);
+
+//   for(var i = 0; i < circles; i++) {
+//     shape = new createjs.Shape();
+//     for(var j = circles; j > 0; j--) {
+//       shape.graphics.beginFill("blue").drawCircle(0, 0, 10);
+//     }
+//     shape.x = Math.random() * canvas.width;
+//     shape.y = Math.random() * canvas.height;
+//     shape.velX = Math.random() * 10 - 5;
+//     shape.velY = Math.random() * 10 - 5;
+
+//     stage.addChild(shape);
+//   }
+
+
+//   createjs.Ticker.addEventListener("tick", tick);
+//   createjs.Ticker.setFPS(50);
+// }
+
+// function tick(event) {
+//   var w = canvas.width;
+//   var h = canvas.height;
+//   var l = stage.getNumChildren() - 1;
+
+//   for(var i = 1; i < l; i++) {
+//     var shape = stage.getChildAt(i);
+//     if ((shape.x > 790 && shape.x < 810)||(shape.x > 0 && shape.x < 10)) {
+//       shape.velX = (0 - shape.velX);
+//     }
+    
+//     if ((shape.y > 590 && shape.y < 610)||(shape.y > 0 && shape.y < 10)) {
+//       shape.velY = (0 - shape.velY);
+//     }
+//     shape.x = (shape.x + shape.velX + w) % w;
+//     shape.y = (shape.y + shape.velY + h) % h;
+//   }
+
+//   stage.update(event);
+// }
+
+
+// init();
+
+        
+
+
+
+
+
+		</script>
+	</body>
+</html>

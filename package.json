@@ -1,0 +1,22 @@
+{
+  "name": "donkey",
+  "version": "1.0.0",
+  "description": "donkey for h5 game demo ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "changfuguo",
+  "license": "ISC",
+  "devDependencies": {
+    "koa": "^2.0.0"
+  },
+  "dependencies": {
+    "babel-core": "^6.13.2",
+    "babel-preset-es2015-node5": "^1.2.0",
+    "babel-preset-stage-3": "^6.11.0",
+    "co": "^4.6.0",
+    "koa-ejs": "^3.0.0",
+    "koa-static-cache": "^3.1.7"
+  }
+}
