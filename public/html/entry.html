@@ -92,6 +92,7 @@
 		<script type="text/javascript" src="../js/lib/soundjs-NEXT.min.js"></script>
 		<script type="text/javascript" src="../js/lib/tweenjs-NEXT.min.js"></script> -->
 		<script type="text/javascript" src="../js/app/spriter/donkeyFrames.js"></script>
+		<script type="text/javascript" src="../js/app/spriter/donkey.js"></script>
 
 		<style type="text/css">
 			#gameBody{
@@ -100,46 +101,27 @@
 		</style>
 		<script type="text/javascript">
 			var stage = new createjs.Stage('canvasSkyLayer');
+			createjs.Ticker.setFPS(30);
 			createjs.Touch.enable(stage);
+
 			container = new createjs.Container();
     		stage.addChild(container);
-			var spritesheet = new createjs.SpriteSheet(donkeyFrames);
-			var offsetY = 400
-			var sprite = new createjs.Sprite(spritesheet, "qiqiu");
-			sprite.x = 200;
-			sprite.y = offsetY;
 			
-			container.addChild(sprite);
-			createjs.Ticker.setFPS(30);
+			var donkey = new dkg.Donkey();
+			donkey.x = 300;
+			donkey.y =500;
 
-			setTimeout(function (argument) {
-				sprite.gotoAndPlay('mj');
-			},1000)
-			setTimeout(function (argument) {
-				sprite.gotoAndPlay('plan');
-			},2000)
-			setTimeout(function (argument) {
-				sprite.gotoAndPlay('superjump');
-			},3000)
-			setTimeout(function (argument) {
-				sprite.gotoAndPlay('ufo');
-			},4000)
-			setTimeout(function (argument) {
-				sprite.gotoAndPlay('qiqiu');
-			},5000)
-			setTimeout(function (argument) {
-				sprite.gotoAndPlay('daiji');
-			},6000)
+			var offsetY = 400
+			container.addChild(donkey)
 			createjs.Ticker.addEventListener('tick', function(e){
-				 
 				offsetY -= 10;
 				if(offsetY < 0) {
 					offsetY = 400;
 				}
-				sprite.y = offsetY;
+				donkey.y = offsetY;
 				stage.update(e);
 			});
-
+			donkey.animation.gotoAndPlay('jump')
 		</script>
 	</body>
 </html>
