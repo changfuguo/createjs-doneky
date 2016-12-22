@@ -91,6 +91,8 @@
 		<!-- <script type="text/javascript" src="../js/lib/webgl-NEXT.min.js"></script>
 		<script type="text/javascript" src="../js/lib/soundjs-NEXT.min.js"></script>
 		<script type="text/javascript" src="../js/lib/tweenjs-NEXT.min.js"></script> -->
+		<script type="text/javascript" src="../js/app/utils/KeyEvent.js"></script>
+
 		<script type="text/javascript" src="../js/app/spriter/donkeyFrames.js"></script>
 		<script type="text/javascript" src="../js/app/spriter/donkey.js"></script>
 
@@ -118,10 +120,12 @@
 				if(offsetY < 0) {
 					offsetY = 400;
 				}
-				donkey.y = offsetY;
+				//donkey.y = offsetY;
 				stage.update(e);
 			});
-			donkey.animation.gotoAndPlay('jump')
+			donkey.animation.gotoAndPlay('run')
+
+ 
 		</script>
 	</body>
 </html>

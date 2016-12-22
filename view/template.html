@@ -96,6 +96,10 @@
 				display:block;
 			}
 		</style>
+
+		<script>
+
+ 
 		<script type="text/javascript">
 			var stage = new createjs.Stage('canvasSkyLayer');
 			
@@ -171,55 +175,55 @@
 
 			////demo 4
 
-			var spritesheet_mj = new createjs.SpriteSheet({
-				images: ["images/frames/donkey/MJ.png"],
-				frames:{
-					height: 128,
-					width: 128
-				},
-				animations: {
-					run: [0, 13, 'run', 1]
-				}
-			});
-			var spritesheet_qiqiu = new createjs.SpriteSheet({
-				images: ["images/frames/donkey/plan.png"],
-				frames:{
-					height: 256,
-					width: 256
-				},
-				animations: {
-					run: [0, 11, 'run', 1]
-				}
-			});
-			var offsetY = 400
-			var sprite ;
+								// var spritesheet_mj = new createjs.SpriteSheet({
+								// 	images: ["images/frames/donkey/MJ.png"],
+								// 	frames:{
+								// 		height: 128,
+								// 		width: 128
+								// 	},
+								// 	animations: {
+								// 		run: [0, 13, 'run', 1]
+								// 	}
+								// });
+								// var spritesheet_qiqiu = new createjs.SpriteSheet({
+								// 	images: ["images/frames/donkey/plan.png"],
+								// 	frames:{
+								// 		height: 256,
+								// 		width: 256
+								// 	},
+								// 	animations: {
+								// 		run: [0, 11, 'run', 1]
+								// 	}
+								// });
+								// var offsetY = 400
+								// var sprite ;
 
 
-			function createSprite(data) {
-				if(sprite)  stage.removeChild(sprite);
-				sprite= new createjs.Sprite(data, "run");
-				sprite.x = 200;
-				sprite.y = offsetY;
-				stage.addChild(sprite);
-			}
-			createSprite(spritesheet_mj);
+								// function createSprite(data) {
+								// 	if(sprite)  stage.removeChild(sprite);
+								// 	sprite= new createjs.Sprite(data, "run");
+								// 	sprite.x = 200;
+								// 	sprite.y = offsetY;
+								// 	stage.addChild(sprite);
+								// }
+								// createSprite(spritesheet_mj);
 
-			setInterval(function() {
-				createSprite(Math.random() > .7 ?spritesheet_mj : spritesheet_qiqiu);
-			}, 2000)
-			
-			createjs.Ticker.setFPS(30);
+								// setInterval(function() {
+								// 	createSprite(Math.random() > .7 ?spritesheet_mj : spritesheet_qiqiu);
+								// }, 2000)
+								
+								// createjs.Ticker.setFPS(30);
 
-			var counter = 0;
-			createjs.Ticker.addEventListener('tick', function(e){
-				// offsetY -= 10;
-				// if(offsetY < 0) {
-				// 	offsetY = 400;
-				// }
-				
-				// sprite.y = offsetY;
-				stage.update(e);
-			});
+								// var counter = 0;
+								// createjs.Ticker.addEventListener('tick', function(e){
+								// 	// offsetY -= 10;
+								// 	// if(offsetY < 0) {
+								// 	// 	offsetY = 400;
+								// 	// }
+									
+								// 	// sprite.y = offsetY;
+								// 	stage.update(e);
+								// });
 
 
 			//// demo5

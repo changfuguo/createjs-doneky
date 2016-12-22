@@ -16,14 +16,13 @@
 		this.direction = 'front'
 
 		//speed x
-
 		this.speedX = 1;
 
 		// speed y
 		this.speedY = .5;
 
-		// 
-		this.flipX = false;
+		// 为－1表示 z轴翻转
+		this.scaleX = 1;
 
 
 		//width 
@@ -79,6 +78,46 @@
 		this.spriteSheet =  new createjs.SpriteSheet(donkeyFrames);
 		this.animation = new createjs.Sprite(this.spriteSheet,'daiji');
 		this.addChild(this.animation);
+		var that = this;
+		var start = + new Date();
+		//this.transformMatrix = [1,0,0,1,0,0]
+ 
+ 
+		this.addEventListener("tick",function (){
+			 ( + new Date - start) <2000?console.log(that._rectangle.y):'';
+
+			 if(dkg.KeyEvent.check('VK_LEFT') || dkg.KeyEvent.check('A')) {
+                // donkeyJump.keyDownLeft = true;
+                that.x -= 4
+            } else {
+                // donkeyJump.keyDownLeft = false;
+                
+
+            }
+
+            if(dkg.KeyEvent.check('VK_RIGHT') || dkg.KeyEvent.check('D')) {
+                // donkeyJump.keyDownRight = true;
+                that.x += 4
+            } else {
+                // donkeyJump.keyDownRight = false;
+            }
+
+             if(dkg.KeyEvent.check('VK_UP') || dkg.KeyEvent.check('A')) {
+                // donkeyJump.keyDownLeft = true;
+                that.y -= 5
+            } else {
+                // donkeyJump.keyDownLeft = false;
+                
+
+            }
+
+            if(dkg.KeyEvent.check('VK_DOWN') || dkg.KeyEvent.check('D')) {
+                // donkeyJump.keyDownRight = true;
+                that.y += 5
+            } else {
+                // donkeyJump.keyDownRight = false;
+            }
+		})
 	}
 
 
@@ -100,6 +139,7 @@
 	dkg.Donkey = createjs.promote(Donkey, "Container");;
 })(window.dkg || (window.dkg ={}));
 
+dkg.KeyEvent.addListener();
 
 
 
