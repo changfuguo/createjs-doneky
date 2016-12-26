@@ -325,6 +325,7 @@
         if(donkeyY < donkey.lastY) {// 向上移动
             if(donkeyY < donkey.minTop) {
                 if(donkeyY < 45776) {
+                   
                     viewport.move(0, donkeyY - 336, true);
                 }
 

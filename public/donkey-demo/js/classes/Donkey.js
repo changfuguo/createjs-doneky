@@ -160,7 +160,6 @@
      */
     Donkey.prototype.__jump = function() {
         var game = this.game;
-
         if(this.animName != 'jump') {
             Audio.play('ogg_jump');
             this.setAnim('jump');

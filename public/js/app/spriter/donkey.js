@@ -7,68 +7,152 @@
 (function (dkg) {
 	function Donkey() {
 		this.Container_constructor();
+		//以下属性是从 container集成过来的
 
 		this.x = 0;
-
 		this.y = 0;
-
+		this.alpha = 1;
+		this.regX = 0;
+		this.regY = 0;
+		this.rotation = 0;
+		this.scaleX = 1;
+		this.scaleY = 1;
+		this.skewX = null;
+		this.skewY = null;
 		// front || left || right
 		this.direction = 'front'
-
 		//speed x
-		this.speedX = 1;
-
+		this.speedX = .3;
 		// speed y
-		this.speedY = .5;
+		this.speedY = 0;
+		//
+		this.lastSpeedX = 0;
+		this.lastSpeedY = 0;
 
-		// 为－1表示 z轴翻转
-		this.scaleX = 1;
+		this.acceX = 0;
+		this.acceY = 0;
 
-
+		this.lastX = this.x;
+		this.lastY = this.y;
 		//width 
 		this.width = 0;
-
 		//height
-
 		this.height = 0;
-
-		//alpha
-
-		this.alpha = 1;
-
-		//rotation 
-
-		this.rotation = 0;
-
 		// supernam
         this._superJumpHeight = 0;
-
        	//mj
         this._MJHeight = 0;
-
         //gliding
         this._glidingHeight = 0;
-
       	//ufo
         this._UFOHeight = 0;
-
         //balloon
         this._balloonHeight = 0;
 		// deadheight
-
 		this.deadheight = 1000;
-
 		// inertia
-
 		this.inertia = 1;
-		
 		//max height arrived
 		this.maxTop = 0;
 		this.initSprites();
+
 	}
 
 	var p = createjs.extend(Donkey, createjs.Container);
 
+	p.update = function(deltaTime){
+		this.lastSpeedX = this.speedX;
+        this.lastSpeedY = this.speedY;
+        this.lastX = this.x;
+        this.lastY = this.y;
+
+        // 计算移动速度
+        this.speedX = this.lastSpeedX + this.acceX * deltaTime;
+        this.speedY = this.lastSpeedY + this.acceY * deltaTime;
+
+        // 计算精灵位置
+        this.x += Math.round((this.lastSpeedX + this.speedX) * deltaTime / 2);
+        this.y += Math.round((this.lastSpeedY + this.speedY) * deltaTime / 2);
+
+	};
+
+	p.__borderCheck = function(){
+		if(this.direction == 'left' && this.x < -64) {
+            this.x = 416;
+        } else if(this.direction == 'right' && this.x > 464) {
+            this.x = -64;
+        }
+	};
+	p.__stateReady = function(deltaTime) {
+        // var game = this.game;
+        // if(game.ready(deltaTime)) {
+        //     this.stateUpdate = this.superJump;
+        //     return false;
+        // }
+        if(this.controler.keyDownLeft) {
+            if(this.direction != 'left') {
+                this.animation.gotoAndPlay('run');
+                this.scaleX = -1;
+                this.speedX = -0.2;
+                this.direction = 'left';
+            }
+            this.__borderCheck();
+        } else if(this.controler.keyDownRight) {
+            if(this.direction != 'right') {
+                this.animation.gotoAndPlay('run');
+                this.scaleX = 1;
+                this.speedX = 0.2;
+                this.direction = 'right';
+            }
+            this.__borderCheck();
+        } else {
+            if(this.direction != 'front') {
+                this.animation.gotoAndPlay('daiji');
+                this.scaleX = 1;
+                this.speedX = 0;
+                this.direction = 'front';
+            }
+        }
+	};
+    p.__jump = function(){
+        if(this.animation.currentAnimation != 'jump') {
+            this.animation.gotoAndPlay('jump');
+            this.speedY = -1;
+            this.acceY = 1 / 600;
+            this.width = 128;
+            this.height = 128;
+        }
+    };
+    p.jump = function() {
+        if(this.speedY != -1) {
+            this.__jump();
+        }
+    }
+	p.reset = function(){
+		this.width = 128;
+        this.height = 128;
+        this.scaleX = 1;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.acceX = 0;
+        this.acceY = 0;
+        this.direction = 'front';
+
+         // 显示待机动画
+        this.animation.gotoAndPlay('daiji');
+        // 预备状态
+        this.stateUpdate = this.__stateReady;
+        // 高度数据清零
+        this.__superJumpHeight = 0;
+        this.__MJHeight = 0;
+        this.__glidingHeight = 0;
+        this.__UFOHeight = 0;
+        this.__balloonHeight = 0;
+        // 死亡数据清零
+        this.deadHeight = 1000;
+        this.deadViewportFixed = false;
+	};
+	
 	//initialize donkey 
 	p.initSprites = function() {
 
@@ -80,56 +164,26 @@
 		this.addChild(this.animation);
 		var that = this;
 		var start = + new Date();
-		//this.transformMatrix = [1,0,0,1,0,0]
- 
- 
 		this.addEventListener("tick",function (){
-			 ( + new Date - start) <2000?console.log(that._rectangle.y):'';
-
-			 if(dkg.KeyEvent.check('VK_LEFT') || dkg.KeyEvent.check('A')) {
-                // donkeyJump.keyDownLeft = true;
-                that.x -= 4
-            } else {
-                // donkeyJump.keyDownLeft = false;
-                
-
+			var delta = new Date - start;
+			start = new Date - 0;
+			 if(that.controler.keyDownLeft) {
+                that.scaleX = -1;
+                that.x -= 14
             }
 
-            if(dkg.KeyEvent.check('VK_RIGHT') || dkg.KeyEvent.check('D')) {
-                // donkeyJump.keyDownRight = true;
-                that.x += 4
-            } else {
-                // donkeyJump.keyDownRight = false;
+            if(that.controler.keyDownRight) {
+                that.scaleX = 1;
+                that.x += 14
             }
 
-             if(dkg.KeyEvent.check('VK_UP') || dkg.KeyEvent.check('A')) {
-                // donkeyJump.keyDownLeft = true;
-                that.y -= 5
-            } else {
-                // donkeyJump.keyDownLeft = false;
-                
-
+            if (that.y + that.height > 800) {
+                that.speedY = -1.2
             }
-
-            if(dkg.KeyEvent.check('VK_DOWN') || dkg.KeyEvent.check('D')) {
-                // donkeyJump.keyDownRight = true;
-                that.y += 5
-            } else {
-                // donkeyJump.keyDownRight = false;
-            }
+            that.__borderCheck();
+            that.update(delta/1.3);
 		})
 	}
-
-
-	//左右的边界检查
-
-	p.checkBoder = function() {
-		if (this.direction == 'left' && this.x < -64) {
-		
-		}
-	}
-
-	// startShow
 
 	p.startRun = function() {
 		

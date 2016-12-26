@@ -3,15 +3,20 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta charset="UTF-8" />
-		<title>HTML5版驴子跳(Donkey Jump) - HTML5游戏 - 御剑神兵的博客 - 专注前端技术研究</title>
+		<title>create</title>
 		<meta name="description" content="这是一个基于HTML5 Canvas和Audio开发的游戏,提供源码下载和详细的注释" />
 		<meta name="keywords"  content="Web前端, 前端开发, JavaScript, HTML, Canvas, Audio, HTML5画布, HTML5游戏, HTML5版驴子跳(Donkey Jump)" />
 		<link type="text/css" rel="stylesheet" href="../css/main.css" />
+		<style type="text/css">
+		canvas{
+			background-color: #0D1635;
+		}
+		</style>
 	</head>
 	<body>
 		<div id="donkeyJump">
 			<!-- 预备界面 -->
-			<div id="gameCover" class="block background">
+			<div id="gameCover" class="block background" style="display:none">
 				<!-- 声音控制按钮 -->
 				<a href="javascript:void(0)" id="btnSound" class="icon">&nbsp;</a>
 				<!-- 成就 -->
@@ -30,23 +35,24 @@
 			<!-- 游戏主体 -->
 			<div id="gameBody" class="block">
 				<div id="gameCanvas" class="block">
+					<canvas width="480" height="800" id="sence"> </canvas>
 					<!-- 天空背景层 -->
-					<canvas width="480" height="800" id="canvasSkyLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasSkyLayer"></canvas> -->
 					<!-- 远景山丘背景层 -->
-					<canvas width="480" height="800" id="canvasHillLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasHillLayer"></canvas> -->
 					<!-- 近景山丘背景层 -->
-					<canvas width="480" height="800" id="canvasHillNearLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasHillNearLayer"></canvas> -->
 					<!-- 房子背景层 -->
-					<canvas width="480" height="800" id="canvasFloorLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasFloorLayer"></canvas> -->
 					<!-- 白云精灵层 -->
-					<canvas width="480" height="800" id="canvasStairLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasStairLayer"></canvas> -->
 					<!-- 驴子精灵层 -->
-					<canvas width="480" height="800" id="canvasDonkeyLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasDonkeyLayer"></canvas> -->
 					<!-- 效果精灵层 -->
-					<canvas width="480" height="800" id="canvasEffectLayer"></canvas>
+					<!-- <canvas width="480" height="800" id="canvasEffectLayer"></canvas> -->
 				</div>
 				<!-- 分数及暂停按钮 -->
-				<div id="numberAndPause" class="block">
+				<div id="numberAndPause" class="block" style="display:none">
 					<!-- 分数 -->
 					<div id="number" class="icon"></div>
 					<!-- 暂停 -->
@@ -95,6 +101,9 @@
 
 		<script type="text/javascript" src="../js/app/spriter/donkeyFrames.js"></script>
 		<script type="text/javascript" src="../js/app/spriter/donkey.js"></script>
+		<script type="text/javascript" src="../js/app/class/viewport.js"></script>
+		<script type="text/javascript" src="../js/app/spriter/donkeyManager.js"></script>
+
 
 		<style type="text/css">
 			#gameBody{
@@ -102,30 +111,40 @@
 			}
 		</style>
 		<script type="text/javascript">
-			var stage = new createjs.Stage('canvasSkyLayer');
-			createjs.Ticker.setFPS(30);
-			createjs.Touch.enable(stage);
+			// var stage = new createjs.Stage('sence');
+			// createjs.Ticker.setFPS(30);
+			// createjs.Touch.enable(stage);
 
-			container = new createjs.Container();
-    		stage.addChild(container);
+			// container = new createjs.Container();
+   //  		stage.addChild(container);
 			
-			var donkey = new dkg.Donkey();
-			donkey.x = 300;
-			donkey.y =500;
+			// var donkey = new dkg.Donkey();
+			// donkey.x = 300;
+			// donkey.y =500;
 
-			var offsetY = 400
-			container.addChild(donkey)
-			createjs.Ticker.addEventListener('tick', function(e){
-				offsetY -= 10;
-				if(offsetY < 0) {
-					offsetY = 400;
-				}
-				//donkey.y = offsetY;
-				stage.update(e);
+			// var offsetY = 400
+			// container.addChild(donkey)
+			// createjs.Ticker.addEventListener('tick', function(e){
+			// 	offsetY -= 10;
+			// 	if(offsetY < 0) {
+			// 		offsetY = 400;
+			// 	}
+			// 	//donkey.y = offsetY;
+			// 	stage.update();
+			// });
+			// donkey.animation.gotoAndPlay('ufo')
+
+
+			
+			
+
+			var manager = new dkg.DonkeyManager('sence');
+			createjs.Ticker.setFPS(10);
+			createjs.Touch.enable(manager.stage);
+ 			manager.start();
+ 			createjs.Ticker.addEventListener('tick', function(e){
+				manager.update();
 			});
-			donkey.animation.gotoAndPlay('run')
-
- 
 		</script>
 	</body>
 </html>
