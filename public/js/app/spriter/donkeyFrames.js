@@ -194,7 +194,7 @@ var donkeyFrames ={
 
 	,
 	animations: {
-		mj:  [0, 13, 'jump', .3],
+		MJ:  [0, 13, 'jump', .3],
 		jump: [14, 47],
 		daiji:[48],
 		dead:[49, 54,'daiji' ,.3],

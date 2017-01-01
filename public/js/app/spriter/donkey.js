@@ -122,12 +122,116 @@
             this.width = 128;
             this.height = 128;
         }
+
+        this.viewUpdate();
     };
+    p.viewUpdate = function(){
+        this.controler && this.controler.viewportUpdate();
+    }:
     p.jump = function() {
         if(this.speedY != -1) {
             this.__jump();
         }
-    }
+    };
+
+    p.MJ = function(){
+        if(this.__MJHeight > 1200) {
+            this.__MJHeight = 0;
+            this.stateUpdate = this.__jump;
+            return false;
+        } else {
+            this.__MJHeight += (this.lastY - this.y);
+        }
+
+        if(this.animation.currentAnimation != 'superjump') {
+            this.animation.gotoAndPlay('MJ');
+            this.speedY = -0.5;
+            this.acceY = 0;
+            this.scaleX = 1;
+        }
+        this.viewUpdate();
+
+    };
+
+    p.superJump = function(){
+        if(this.__superJumpHeight > 1200) {
+            this.__superJumpHeight = 0;
+            this.stateUpdate = this.__jump;
+            return false;
+        } else {
+            this.__superJumpHeight += (this.lastY - this.y);
+        }
+
+        if(this.animation.currentAnimation != 'superjump') {
+            this.animation.gotoAndPlay('superjump');
+            this.speedY = -0.8;
+            this.acceY = 0;
+        }
+        this.viewUpdate();
+
+    };
+
+    p.gliding = function(){
+        if(this.__glidingHeight > 1200) {
+            this.__glidingHeight = 0;
+            this.stateUpdate = this.__jump;
+            return false;
+        } else {
+            this.__glidingHeight += (this.lastY - this.y);
+        }
+
+        if(this.animation.currentAnimation != 'plan') {
+            this.animation.gotoAndPlay('plan');
+            this.speedY = -0.5;
+            this.acceY = 0;
+            this.scaleX = 1;
+            this.width = 256;
+            this.height = 256;
+        }
+        this.viewUpdate();
+
+    };
+
+    p.UFO = function(){
+        if(this.__UFOHeight > 1200) {
+            this.__UFOHeight = 0;
+            this.stateUpdate = this.__jump;
+            return false;
+        } else {
+            this.__UFOHeight += (this.lastY - this.y);
+        }
+
+        if(this.animation.currentAnimation != 'ufo') {
+            this.animation.gotoAndPlay('ufo');
+            this.speedY = -0.5;
+            this.acceY = 0;
+            this.scaleX = 1;
+            this.width = 256;
+            this.height = 512;
+        }
+        this.viewUpdate();
+
+    };
+    p.balloon = function(){
+         if(this.__balloonHeight > 1200) {
+            this.__balloonHeight = 0;
+            this.stateUpdate = this.__jump;
+            return false;
+        } else {
+            this.__balloonHeight += (this.lastY - this.y);
+        }
+
+        if(this.animation.currentAnimation != 'qiqiu') {
+            this.animation.gotoAndPlay('qiqiu');
+            this.speedY = -0.5;
+            this.acceY = 0;
+            this.scaleX = 1;
+            this.width = 128;
+            this.height = 128;
+        }
+        this.viewUpdate();
+        
+    };
 	p.reset = function(){
 		this.width = 128;
         this.height = 128;
