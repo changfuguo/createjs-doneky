@@ -103,15 +103,21 @@
         this.donkey.x = 100;
         this.donkey.y = 600//this.viewportDefault[1] + 530;
         this.donkey.minTop = this.donkey.y;
-
         this.__createDefaultStair();
+
+        this.donkey.reset();
     };
 
     PT.__createDefaultStair = function(){
         this.lastStairY = this.viewportDefault[1] + 100;
         var stair = new dkg.Stair({name:"moveable",y: 600});
         stair.init();
-        this.stairLayer.addChild(stair);
+
+        for(var i = 0 ; i < 4; i++) {
+            var stair = new dkg.Stair({y: 600 - i * 200});
+            stair.init();
+            this.stairLayer.addChild(stair);
+        }
     };
     PT.createLayer =  function(){
 
@@ -146,7 +152,7 @@
     };
 
     PT.viewportUpdate = function(){
-        console.log('viewportUpdate')
+        //console.log('viewportUpdate')
     };
 
     PT.createDonkey = function(){
@@ -175,7 +181,12 @@
         this.createUI();
 
         this.stateInit();
-        this.donkey.jump();
+        
+        var that = this;
+        var handler = setTimeout(function() {
+            clearTimeout(handler);
+            that.donkey.jump();
+        },1000)
     }
     PT.update = function(e){
        
@@ -183,14 +194,12 @@
         this.stage.update();
         if(dkg.KeyEvent.check('VK_LEFT') || dkg.KeyEvent.check('A')) {
             this.keyDownLeft = true;
-            this.donkey.speedX *= -1;
         } else {
             this.keyDownLeft = false;
         }
 
         if(dkg.KeyEvent.check('VK_RIGHT') || dkg.KeyEvent.check('D')) {
             this.keyDownRight = true;
-            this.donkey.speedX *= -1;
         } else {
             this.keyDownRight = false;
         }

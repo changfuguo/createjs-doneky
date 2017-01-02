@@ -40,7 +40,7 @@
 			}
 
 			this.update = this._move;
-			console.log(this.animation)
+			//console.log(this.animation)
 		}
 
 		if (staire == 'friable') {

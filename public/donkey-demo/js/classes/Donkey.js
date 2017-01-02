@@ -352,9 +352,13 @@
             this.inertia = this.speedX;
             this.__borderCheck();
         } else {
+            console.log('__keyControl:'+this.inertia, this.speedX)
             if(this.inertia < 0) {
+                console.log('< 0')
                 this.inertia += 0.005;
             } else if(this.inertia > 0) {
+                console.log('> 0')
+
                 this.inertia -= 0.005;
             }
             this.speedX = this.inertia;

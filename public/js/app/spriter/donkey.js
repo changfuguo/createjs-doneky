@@ -22,7 +22,7 @@
 		// front || left || right
 		this.direction = 'front'
 		//speed x
-		this.speedX = .3;
+		this.speedX = 0;
 		// speed y
 		this.speedY = 0;
 		//
@@ -59,7 +59,6 @@
 	}
 
 	var p = createjs.extend(Donkey, createjs.Container);
-
 	p.update = function(deltaTime){
 		this.lastSpeedX = this.speedX;
         this.lastSpeedY = this.speedY;
@@ -73,6 +72,8 @@
         // 计算精灵位置
         this.x += Math.round((this.lastSpeedX + this.speedX) * deltaTime / 2);
         this.y += Math.round((this.lastSpeedY + this.speedY) * deltaTime / 2);
+
+        this.stateUpdate && this.stateUpdate();
 
 	};
 
@@ -90,6 +91,7 @@
         //     return false;
         // }
         if(this.controler.keyDownLeft) {
+            console.log('__stateReady')
             if(this.direction != 'left') {
                 this.animation.gotoAndPlay('run');
                 this.scaleX = -1;
@@ -122,13 +124,14 @@
             this.width = 128;
             this.height = 128;
         }
-
+        this.__keyControl(true);
         this.viewUpdate();
     };
     p.viewUpdate = function(){
         this.controler && this.controler.viewportUpdate();
-    }:
+    };
     p.jump = function() {
+        console.log(this.speedY)
         if(this.speedY != -1) {
             this.__jump();
         }
@@ -149,10 +152,39 @@
             this.acceY = 0;
             this.scaleX = 1;
         }
+        this.__keyControl();
         this.viewUpdate();
 
     };
 
+    p.__keyControl = function (scaleX){
+        scaleX = scaleX ? -1 : 1;
+        var game = this.controler;
+        if(game.keyDownLeft) {
+            if(this.direction != 'left') {
+                this.scaleX = scaleX;
+                this.direction = 'left';
+            }
+            this.speedX = -0.25;
+            this.inertia = this.speedX;
+            this.__borderCheck();
+        } else if(game.keyDownRight) {
+            if(this.direction != 'right') {
+                this.scaleX = 1;
+                this.direction = 'right';
+            }
+            this.speedX = 0.25;
+            this.inertia = this.speedX;
+            this.__borderCheck();
+        } else {
+            if(this.inertia < 0) {
+                this.inertia += 0.005;
+            } else if(this.inertia > 0) {
+                this.inertia -= 0.005;
+            }
+            this.speedX = this.inertia;
+        }
+    };
     p.superJump = function(){
         if(this.__superJumpHeight > 1200) {
             this.__superJumpHeight = 0;
@@ -167,6 +199,7 @@
             this.speedY = -0.8;
             this.acceY = 0;
         }
+        this.__keyControl(true);
         this.viewUpdate();
 
     };
@@ -188,6 +221,8 @@
             this.width = 256;
             this.height = 256;
         }
+        
+        this.__keyControl();
         this.viewUpdate();
 
     };
@@ -209,6 +244,7 @@
             this.width = 256;
             this.height = 512;
         }
+        this.__keyControl();
         this.viewUpdate();
 
     };
@@ -229,8 +265,32 @@
             this.width = 128;
             this.height = 128;
         }
+        this.__keyControl();
         this.viewUpdate();
-        
+    };
+    p.dead = function() {
+        this.stateUpdate = this.__dead;
+        this.animation.gotoAndPlay('dead');
+        this.speedX = 0;
+        this.speedY = 0.15;
+        this.acceX = 0;
+        this.acceY = 1 / 1000;
+        this.scaleX = 1;
+    };
+    p.__dead = function() {
+        if(this.deadHeight > 0) {
+            var diffY = this.y - this.lastY, viewport = game.viewport;
+            if(this.deadViewportFixed) {
+            } else if(this.y >= viewport.y + 400) {
+                viewport.move(0, diffY * 2);
+            } else {
+                this.deadViewportFixed = true;
+            }
+
+            this.deadHeight -= diffY;
+        } else {
+            console.log('over')
+        }
     };
 	p.reset = function(){
 		this.width = 128;
@@ -271,28 +331,23 @@
 		this.addEventListener("tick",function (){
 			var delta = new Date - start;
 			start = new Date - 0;
-			 if(that.controler.keyDownLeft) {
-                that.scaleX = -1;
-                that.x -= 14
-            }
+    			 // if(that.controler.keyDownLeft) {
+        //             that.scaleX = -1;
+        //             that.x -= 14
+        //         }
 
-            if(that.controler.keyDownRight) {
-                that.scaleX = 1;
-                that.x += 14
-            }
+        //         if(that.controler.keyDownRight) {
+        //             that.scaleX = 1;
+        //             that.x += 14
+        //         }
 
             if (that.y + that.height > 800) {
                 that.speedY = -1.2
             }
             that.__borderCheck();
-            that.update(delta/1.3);
+            that.update(delta / 110.3);
 		})
 	}
-
-	p.startRun = function() {
-		
-	}
-
 
 	dkg.Donkey = createjs.promote(Donkey, "Container");;
 })(window.dkg || (window.dkg ={}));
