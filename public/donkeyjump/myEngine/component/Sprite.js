@@ -90,7 +90,6 @@
      * @param {Number} deltaTime
      */
     Sprite.prototype.update = function(deltaTime) {
-        // console.log(this.y, this.acceY, this.speedY, this.lastSpeedY, this.direction)
         this.lastSpeedX = this.speedX;
         this.lastSpeedY = this.speedY;
         this.lastX = this.x;
@@ -104,8 +103,6 @@
         this.x += Math.round((this.lastSpeedX + this.speedX) * deltaTime / 2);
         this.y += Math.round((this.lastSpeedY + this.speedY) * deltaTime / 2);
 
-        // console.log('update:' + this.speedX)
-        
         // 更新当前动画帧状态
         if(this.anim) {
             this.anim.update(deltaTime);

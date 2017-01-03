@@ -73,7 +73,7 @@
         /**
          * 惯性
          */
-        this.inertia = 1;
+        this.inertia = 0;
 
         Donkey.superclass.constructor.call(this, cfg);
     }
@@ -160,6 +160,7 @@
      */
     Donkey.prototype.__jump = function() {
         var game = this.game;
+
         if(this.animName != 'jump') {
             Audio.play('ogg_jump');
             this.setAnim('jump');
@@ -352,13 +353,9 @@
             this.inertia = this.speedX;
             this.__borderCheck();
         } else {
-            console.log('__keyControl:'+this.inertia, this.speedX)
             if(this.inertia < 0) {
-                console.log('< 0')
                 this.inertia += 0.005;
             } else if(this.inertia > 0) {
-                console.log('> 0')
-
                 this.inertia -= 0.005;
             }
             this.speedX = this.inertia;

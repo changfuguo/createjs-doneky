@@ -44,6 +44,7 @@
     Viewport.prototype.move = function(x, y, absolute) {
         this.__lastX = this.x;
         this.__lastY = this.y;
+
         if(absolute) {
             this.x = x;
             this.y = y;

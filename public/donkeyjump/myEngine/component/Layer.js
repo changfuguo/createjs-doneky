@@ -104,7 +104,6 @@
             cw = child.width;
             ch = child.height;
 
-            //这个指的是在viewport的可视范围内才进行绘制，否则不绘制
             if(Math.abs((cx + cw / 2) - (vx + vw / 2)) < (cw + vw) / 2 && Math.abs((cy + ch / 2) - (vy + vh / 2)) < (ch + vh) / 2) {
                 child.x = cx - vx;
                 child.y = cy - vy;

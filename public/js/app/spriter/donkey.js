@@ -59,7 +59,9 @@
 	}
 
 	var p = createjs.extend(Donkey, createjs.Container);
+    var i = 0;
 	p.update = function(deltaTime){
+        console.log(this.speedX)
 		this.lastSpeedX = this.speedX;
         this.lastSpeedY = this.speedY;
         this.lastX = this.x;
@@ -177,6 +179,7 @@
             this.inertia = this.speedX;
             this.__borderCheck();
         } else {
+            debugger
             if(this.inertia < 0) {
                 this.inertia += 0.005;
             } else if(this.inertia > 0) {
@@ -345,7 +348,7 @@
                 that.speedY = -1.2
             }
             that.__borderCheck();
-            that.update(delta / 110.3);
+            that.update(delta / 1.3);
 		})
 	}
 
