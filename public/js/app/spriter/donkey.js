@@ -51,7 +51,7 @@
 		// deadheight
 		this.deadheight = 1000;
 		// inertia
-		this.inertia = 1;
+		this.inertia = 0;
 		//max height arrived
 		this.maxTop = 0;
 		this.initSprites();
@@ -61,7 +61,6 @@
 	var p = createjs.extend(Donkey, createjs.Container);
     var i = 0;
 	p.update = function(deltaTime){
-        console.log(this.speedX)
 		this.lastSpeedX = this.speedX;
         this.lastSpeedY = this.speedY;
         this.lastX = this.x;
@@ -75,7 +74,7 @@
         this.x += Math.round((this.lastSpeedX + this.speedX) * deltaTime / 2);
         this.y += Math.round((this.lastSpeedY + this.speedY) * deltaTime / 2);
 
-        this.stateUpdate && this.stateUpdate();
+        this.stateUpdate && this.stateUpdate(deltaTime);
 
 	};
 
@@ -87,21 +86,23 @@
         }
 	};
 	p.__stateReady = function(deltaTime) {
-        // var game = this.game;
-        // if(game.ready(deltaTime)) {
-        //     this.stateUpdate = this.superJump;
-        //     return false;
-        // }
-        if(this.controler.keyDownLeft) {
-            console.log('__stateReady')
+        var game = this.controler;
+        if(game.ready(deltaTime)) {
+            this.stateUpdate = this.jump;
+            return false;
+        }
+        if(game.keyDownLeft) {
+            console.log('1:' + this.direction)
             if(this.direction != 'left') {
+        console.log('2:'+this.direction)
+
                 this.animation.gotoAndPlay('run');
                 this.scaleX = -1;
                 this.speedX = -0.2;
                 this.direction = 'left';
             }
             this.__borderCheck();
-        } else if(this.controler.keyDownRight) {
+        } else if(game.keyDownRight) {
             if(this.direction != 'right') {
                 this.animation.gotoAndPlay('run');
                 this.scaleX = 1;
@@ -133,7 +134,6 @@
         this.controler && this.controler.viewportUpdate();
     };
     p.jump = function() {
-        console.log(this.speedY)
         if(this.speedY != -1) {
             this.__jump();
         }
@@ -179,11 +179,16 @@
             this.inertia = this.speedX;
             this.__borderCheck();
         } else {
-            debugger
             if(this.inertia < 0) {
-                this.inertia += 0.005;
+                this.inertia += 0.015;
             } else if(this.inertia > 0) {
-                this.inertia -= 0.005;
+                this.inertia -= 0.015;
+            }
+
+            // 小于一定数目直接置为0，免得
+            if (Math.abs(this.inertia) < .01) {
+                this.inertia = 0;
+                this.speedX = 0;
             }
             this.speedX = this.inertia;
         }

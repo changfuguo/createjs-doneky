@@ -198,8 +198,8 @@ var donkeyFrames ={
 		jump: [14, 47],
 		daiji:[48],
 		dead:[49, 54,'daiji' ,.3],
-		plan:[55,66,'jump', .3],
-		run:[67,79,'run', .3],
+		plan:[55,66,'jump', .9],
+		run:[67,79,'run', 2],
 		superjump:[80,91,'jump', .3],
 		ufo:[92,104,'jump', .3],
 		qiqiu:[105,154,'jump', 1]

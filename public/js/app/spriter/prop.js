@@ -43,27 +43,41 @@
             case 'spring01':
                 donkey.jump();
                 donkey.speedY = -3;
+                this.width = 41;
+                this.height = 14;
                 donkey.animation.framerate = 0.2;
                 break;
             case 'michael':
+                this.width = 80;
+                this.height = 45;
                 donkey.stateUpdate = donkey.MJ;
                 break;
             case 'super':
+                this.width = 58;
+                this.height = 84;
                 donkey.stateUpdate = donkey.superJump;
                 break;
             case 'gliding01':
+                this.width = 75;
+                this.height = 64;
                 donkey.stateUpdate = donkey.gliding;
                 break;
             case 'ufo':
+                this.width = 71;
+                this.height = 44;
                 donkey.stateUpdate = donkey.UFO;
                 break;
             case 'balloon':
+                this.width = 54;
+                this.height = 64;
                 donkey.stateUpdate = donkey.balloon;
                 break;
         }
 
         if (this.name == 'spring01') {
         	this.name = 'spring03';
+            this.width = 41;
+            this.height = 30;
         	this.animation.gotoAndPlay(this.name);
         } else {
         	if (this.parent) {

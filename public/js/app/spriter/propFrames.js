@@ -1,7 +1,7 @@
 var propFrames ={
 	images: [
-						"../images/frames/props/props_spring01.png",
-						"../images/frames/props/props_spring03.png",
+						"../images/frames/props/prop_spring01.png",
+						"../images/frames/props/prop_spring03.png",
 						"../images/frames/props/props_balloon.png",
 						"../images/frames/props/props_gliding01.png",
 						"../images/frames/props/props_michael.png",

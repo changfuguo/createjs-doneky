@@ -71,7 +71,7 @@
         /**
          * 预备时间
          */
-        this.readyTime = 5;
+        this.readyTime = 0;
 
         /**
          * 是否即将开始
@@ -104,7 +104,6 @@
         this.donkey.y = 600//this.viewportDefault[1] + 530;
         this.donkey.minTop = this.donkey.y;
         this.__createDefaultStair();
-
         this.donkey.reset();
     };
 
@@ -117,6 +116,18 @@
             var stair = new dkg.Stair({y: 600 - i * 200});
             stair.init();
             this.stairLayer.addChild(stair);
+            this.__createProp(stair);
+        }
+    };
+
+    PT.__createProp = function(stair){
+        if (dkg.Random(1,6) <= 6) {
+            var prop = new dkg.Prop();
+            prop.init();
+            prop.x = dkg.Random(stair.x, stair.x + 150 - prop.width);
+            prop.y = stair.y - prop.height;
+            stair.prop = prop;
+            this.stairLayer.addChild(prop);
         }
     };
     PT.createLayer =  function(){
@@ -141,9 +152,18 @@
         this.stage.addChild(hillLayer);
         this.stage.addChild(hillNearLayer);
         this.stage.addChild(floorLayer);
+
         this.stage.addChild(stairLayer);
         this.stage.addChild(donkeyLayer);
         this.stage.addChild(effectLayer);
+
+
+        var shape = new createjs.Shape(
+            new createjs.Graphics().beginFill("red").drawRect(2,2,476,798)
+        );
+        shape.alpha = .6;
+        //stairLayer.rotation = 20;
+        stairLayer.addChild(shape);
 
 
     };
@@ -174,6 +194,22 @@
 
         }
     };
+
+    PT.ready = function(delta){
+        var go = false;
+
+        if (delta == 0) {
+            return false;
+        }
+
+        if (this.readyTime > 3000) {
+            go = true;
+        }
+
+        this.readyTime +=delta;
+
+        return go;
+    };
     PT.start = function(){
         this.createLayer();
         this.createDonkey();
@@ -181,12 +217,6 @@
         this.createUI();
 
         this.stateInit();
-        
-        var that = this;
-        var handler = setTimeout(function() {
-            clearTimeout(handler);
-            that.donkey.jump();
-        },1000)
     }
     PT.update = function(e){
        
@@ -204,11 +234,11 @@
             this.keyDownRight = false;
         }
 
-        if (this.keyDownLeft) {
-            this.donkey.direction = 'left';
-        } else if(this.keyDownRight) { 
-            this.donkey.direction = 'right';
-        }
+        // if (this.keyDownLeft) {
+        //     this.donkey.direction = 'left';
+        // } else if(this.keyDownRight) { 
+        //     this.donkey.direction = 'right';
+        // }
     };
     dkg.DonkeyManager = donkeyManager;
 

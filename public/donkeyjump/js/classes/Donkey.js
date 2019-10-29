@@ -120,6 +120,7 @@
             this.__borderCheck();
             this.parent.change();
         } else {
+
             if(this.direction != 'front') {
                 this.setAnim('daiji');
                 this.flipX = false;

@@ -19,12 +19,14 @@
 		this.speedX = 0;
 
 		this.lastX = this.x;
+
+
 	}
 
 	var PT = createjs.extend(Stair, createjs.Container);
 	PT.init = function(){
 		var that = this;
-		this.x = this.x || dkg.Random(10, 300);
+		this.x = this.x || dkg.Random(128 +128, 480 - 128);
 		if(this.animation && this.animation.parent){
             this.animation.parent.removeChild(this.animation);
         }
@@ -58,7 +60,7 @@
 	};
 
 	PT._move = function(){
-		 if((this.x < 30 && this.speedX < 0) || (this.x > 402 && this.speedX > 0)) {
+		 if((this.x < 128 && this.speedX < 0) || (this.x > 358 && this.speedX > 0)) {
             this.speedX = -this.speedX;
         }
 
